@@ -2,7 +2,8 @@
  * leds.c
  *
  *  Created on: Feb 10, 2023
- *      Author: armando
+ *  Author: Armando Cabrales
+ *  		Efren Díaz
  */
 
 #include "leds.h"
@@ -31,5 +32,4 @@ void rgb_off(void){
 	GPIO_PortSet(RED_LED_GPIO, RED_LED_MASK);
 	GPIO_PortSet(BLUE_LED_GPIO, BLUE_LED_MASK);
 	GPIO_PortSet(GREEN_LED_GPIO, GREEN_LED_MASK);
-
 }

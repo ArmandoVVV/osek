@@ -2,7 +2,8 @@
  * gpio.c
  *
  *  Created on: Nov 8, 2022
- *      Author: armando
+ *  Author: Armando Cabrales
+ *  		Efren Díaz
  */
 
 #include "config.h"

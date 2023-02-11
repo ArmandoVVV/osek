@@ -3,7 +3,8 @@
 *	\file
 *	\brief
 *	\
-*	    Author:
+ *  Author: Armando Cabrales
+ *  		Efren Díaz
 *
 */
 

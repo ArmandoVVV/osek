@@ -1,7 +1,8 @@
 /* nvic.c
  *	\file
  *	\brief
- *	\author Armando Cabrales
+ *	 *  Author: Armando Cabrales
+ *  		Efren Díaz
  *	\date	Sep 20, 2022
  */
 

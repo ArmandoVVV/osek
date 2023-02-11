@@ -2,7 +2,8 @@
  * leds.h
  *
  *  Created on: Feb 10, 2023
- *      Author: armando
+ *  Author: Armando Cabrales
+ *  		Efren Díaz
  */
 
 #ifndef LEDS_H_

@@ -5,7 +5,8 @@
  *		This is the source file for the NVIC device driver for Kinetis K64.
  *		It contains some configuration functions and runtime functions.
  *		It is implemented using  CMSIS Core functions
- *		author: Armando Cabrales
+ *		 *  Author: Armando Cabrales
+ *  		Efren Díaz
  *  	Created on: Sep 20, 2022
  *
  */

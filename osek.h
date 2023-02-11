@@ -2,7 +2,8 @@
  * osek.h
  *
  *  Created on: Feb 1, 2023
- *      Author: armando
+ *  Author: Armando Cabrales
+ *  		Efren Díaz
  */
 
 #ifndef OSEK_H_

@@ -2,7 +2,8 @@
  * osek.c
  *
  *  Created on: Feb 1, 2023
- *      Author: armando
+ *       *  Author: Armando Cabrales
+ *  		Efren Díaz
  */
 
 #include "osek.h"
@@ -29,7 +30,6 @@ void activate_task(uint8_t task_id){
 void chain_task(uint8_t task_id){
 	// ejecuta una tarea despues de que termina la tarea actual
 	 tasks_g[task_id].state = WAITING;
-
 }
 
 

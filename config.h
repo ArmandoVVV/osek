@@ -4,7 +4,8 @@
  * 		\brief
 
  *  	Created on:
- *		Author:
+ *  Author: Armando Cabrales
+ *  		Efren Díaz
  */
 
 #ifndef CONFIG_H_
