@@ -7,10 +7,6 @@
 
 #include "osek.h"
 
-//static task_t tasks[3] = {task_t task_A, task_t task_B, task_t task_C};
-
-// TODO: hacer una funcion que cheque cual es la tarea actual en ejecución
-
 static task_t tasks_g[3];
 static task_t* running_task_g;
 
@@ -22,52 +18,65 @@ void add_task(task_t task){
 }
 
 void activate_task(uint8_t task_id){
-	// pone la tarea en running
+	// pone la tarea en ready
 
-	tasks_g[task_id].state = RUNNING;
-	running_task_g = &tasks_g[task_id];
+	tasks_g[task_id].state = READY;
 
-	tasks_g[task_id].function();
-
-	//scheduler();
+	scheduler();
 }
 
 
 void chain_task(uint8_t task_id){
 	// ejecuta una tarea despues de que termina la tarea actual
+	 tasks_g[task_id].state = WAITING;
+
 }
 
 
 void terminate_task(void){
-	uint8_t task_id;
-
-//	for (task_id = 0; task_id < TOTAL_TASKS; task_id++){
-//		if(RUNNING == tasks_g[task_id].state){
-//			tasks_g[task_id].state = READY;
-//		}
-//	}
-
-	running_task_g->state = READY;
-
+	running_task_g->state = SUSPENDED;
+	scheduler();
 }
 
 void scheduler(void){
-	// buscar cual es la siguiente tarea dependiendo de su estado y prioridad
+	uint8_t task_id;
 
-//	uint8_t task_id;
-//
-//	terminate_task();
-//
-//	for (task_id = 0; task_id < TOTAL_TASKS; task_id++){
-//		if(RUNNING == tasks_g[task_id].state){
-//			tasks_g[task_id].state = READY;
-//		}
-//	}
+	for(task_id = 0; task_id < TOTAL_TASKS; task_id++){
+		if(WAITING == tasks_g[task_id].state){
+			 tasks_g[task_id].state = RUNNING;
+			 running_task_g = &tasks_g[task_id];
+			 tasks_g[task_id].function();
+		}
+		else if(READY ==  tasks_g[task_id].state){
+			switch(tasks_g[task_id].priority){
+				case 0:
+					tasks_g[task_id].state = RUNNING;
+					running_task_g = &tasks_g[task_id];
+					tasks_g[task_id].function();
+					break;
+
+				case 1:
+					tasks_g[task_id].state = RUNNING;
+					running_task_g = &tasks_g[task_id];
+					tasks_g[task_id].function();
+					break;
+
+				case 2:
+					tasks_g[task_id].state = RUNNING;
+					running_task_g = &tasks_g[task_id];
+					tasks_g[task_id].function();
+					break;
+
+				default:
+					// ignore
+					break;
+
+			}
+		}
+	}
 
 }
 
-// solo funciona para este caso en especifico, solo una tarea con autostart
-// corre la tarea con autostart con mas prioridad
 void os_init(void){
 	uint8_t task_id;
 
@@ -76,4 +85,6 @@ void os_init(void){
 			activate_task(task_id);
 		}
 	}
+
+	scheduler();
 }

@@ -24,7 +24,7 @@ typedef struct{
 	uint8_t priority;
 	void (*function)(void);	  // apuntador a inicio de la tarea
 	uint8_t task_id;
-	uint8_t* current_address; // todo: no se si los apuntadores estan bien
+	//uint32_t* current_address; // todo: implementar bien en practica 2
 	boolean_t autostart;
 	task_state_t state;
 	// registro

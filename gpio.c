@@ -73,60 +73,27 @@ void PORTB_IRQHandler(void){
 
 void GPIO_init(void)
 {
-	gpio_pin_config_t gpio_input_config = {
-			        kGPIO_DigitalInput,
-			        0,
-			    };
 
 	gpio_pin_config_t gpio_output_config = {
 			        kGPIO_DigitalOutput,
 			        1,
 			    };
 
-	const port_pin_config_t spi_config = {
-		.pullSelect = kPORT_PullDisable,
-		.slewRate = kPORT_FastSlewRate,
-		.passiveFilterEnable = kPORT_PassiveFilterEnable,
-		.openDrainEnable = kPORT_OpenDrainDisable,
-		.driveStrength = kPORT_HighDriveStrength,
-		.mux = kPORT_MuxAlt2,
-		.lockRegister = kPORT_UnlockRegister,
-	};
 
-	const port_pin_config_t button_config = {
-			kPORT_PullUp,                                            /* Internal pull-up resistor is enabled */
-			kPORT_FastSlewRate,                                      /* Fast slew rate is configured */
-			kPORT_PassiveFilterEnable,                              /* Passive filter is disabled */
-			kPORT_OpenDrainDisable,                                  /* Open drain is disabled */
-			kPORT_HighDriveStrength,                                 /* High drive strength is configured */
-			kPORT_MuxAsGpio,                                         /* Pin is configured as PTA4 */
-			kPORT_UnlockRegister                                     /* Pin Control Register fields [15:0] are not locked */
-		  };
+	CLOCK_EnableClock(kCLOCK_PortC);
+	CLOCK_EnableClock(kCLOCK_PortA);
+	CLOCK_EnableClock(kCLOCK_PortE);
 
 
-//	CLOCK_EnableClock(kCLOCK_PortD);
-//	CLOCK_EnableClock(kCLOCK_PortC);
-	CLOCK_EnableClock(kCLOCK_PortB);
-//	CLOCK_EnableClock(kCLOCK_PortA);
+	PORT_SetPinMux(RED_LED_PORT, RED_LED_PIN, kPORT_MuxAsGpio);
+	GPIO_PinInit(RED_LED_GPIO, RED_LED_PIN, &gpio_output_config);
 
-	// DC AND RST
-	gpio_pin_config_t gpio_pin_config;
+	PORT_SetPinMux(BLUE_LED_PORT, BLUE_LED_PIN, kPORT_MuxAsGpio);
+	GPIO_PinInit(BLUE_LED_GPIO, BLUE_LED_PIN, &gpio_output_config);
 
-	gpio_pin_config.outputLogic = 0;
-	gpio_pin_config.pinDirection = kGPIO_DigitalOutput;
-
-	GPIO_PinInit(LCD_DC_GPIO, LCD_DC_PIN, &gpio_pin_config);
-
-	gpio_pin_config.outputLogic = 1;
-
-	GPIO_PinInit(LCD_RST_GPIO, LCD_RST_PIN, &gpio_pin_config);
-
-	PORT_SetPinMux(LCD_DC_PORT, LCD_DC_PIN, kPORT_MuxAsGpio);
-	PORT_SetPinMux(LCD_RST_PORT, LCD_RST_PIN, kPORT_MuxAsGpio);
+	PORT_SetPinMux(GREEN_LED_PORT, GREEN_LED_PIN, kPORT_MuxAsGpio);
+	GPIO_PinInit(GREEN_LED_GPIO, GREEN_LED_PIN, &gpio_output_config);
 
 
-	// DISPLAY
-	PORT_SetPinConfig(LCD_CE_PORT, LCD_CE_PIN, &spi_config);
-	PORT_SetPinConfig(CLK_PORT, CLK_PIN, &spi_config);
-	PORT_SetPinConfig(LCD_SDA_PORT, LCD_SDA_PIN, &spi_config);
+
 }
