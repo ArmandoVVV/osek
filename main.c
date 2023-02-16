@@ -8,7 +8,6 @@
 #include "osek.h"
 #include "gpio.h"
 #include "leds.h"
-#include "fsl_common.h"
 
 
 #define TASK_A_ID	0
@@ -17,32 +16,32 @@
 #define US_TO_DELAY	2000000
 
 void task_A_function(void){
-	green_led_on();
+	Green_led_on();
+	SDK_DelayAtLeastUs(US_TO_DELAY,CLOCK_GetFreq(kCLOCK_CoreSysClk)); //TODO: Save core freq in a variable, make this more precision
+	activate_task(TASK_B_ID); //TODO: Is not needed to send the task ID.
+	Green_led_on();
 	SDK_DelayAtLeastUs(US_TO_DELAY,CLOCK_GetFreq(kCLOCK_CoreSysClk));
-	activate_task(TASK_B_ID);
-	green_led_on();
-	SDK_DelayAtLeastUs(US_TO_DELAY,CLOCK_GetFreq(kCLOCK_CoreSysClk));
-	rgb_off();
+	RGB_off();
 	terminate_task();
 }
 
 void task_B_function(void){
-	red_led_on();
+	Red_led_on();
 	SDK_DelayAtLeastUs(US_TO_DELAY,CLOCK_GetFreq(kCLOCK_CoreSysClk));
-	chain_task(TASK_C_ID);
-	terminate_task();
+	chain_task(TASK_C_ID); //TODO: Remade this function, this will terminate this task and continue th next task.
+	terminate_task();		//TODO: So far this is not needed.
 }
 
 void task_C_function(void){
-	blue_led_on();
+	Blue_led_on();
 	SDK_DelayAtLeastUs(US_TO_DELAY,CLOCK_GetFreq(kCLOCK_CoreSysClk));
 	terminate_task();
 }
 
 int main(void) {
-	task_t task_A = {
+	task_t task_A = {						//TODO: Move this variable out of main
 			.autostart = TRUE,
-			.priority = 0,
+			.priority = 0,					//TODO: Priorites are inversed.
 			.state = READY,
 			.function = task_A_function,
 	};
@@ -61,8 +60,8 @@ int main(void) {
 			.function = task_C_function,
 	};
 
-	add_task(task_A);
-	add_task(task_B);
+	add_task(task_A); //TODO: This is the global solution for the variables in main
+	add_task(task_B); //TODO: With return: task_A_ID = add_task(task_A)
 	add_task(task_C);
 
 

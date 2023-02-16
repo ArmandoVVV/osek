@@ -2,13 +2,13 @@
  * osek.c
  *
  *  Created on: Feb 1, 2023
- *       *  Author: Armando Cabrales
+ *  Author: Armando Cabrales
  *  		Efren Díaz
  */
 
 #include "osek.h"
 
-static task_t tasks_g[3];
+static task_t tasks_g[3]; //TODO: Max number task (10) delete magic number
 static task_t* running_task_g;
 
 void add_task(task_t task){
@@ -18,7 +18,7 @@ void add_task(task_t task){
 	index++;
 }
 
-void activate_task(uint8_t task_id){
+void activate_task(uint8_t task_id){ //TODO: Return ID task in function
 	// pone la tarea en ready
 
 	tasks_g[task_id].state = READY;
