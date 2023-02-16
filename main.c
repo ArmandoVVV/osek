@@ -43,21 +43,21 @@ int main(void) {
 	task_t task_A = {
 			.autostart = TRUE,
 			.priority = 0,
-			.state = READY,
+			.state = SUSPENDED,
 			.function = task_A_function,
 	};
 
 	task_t task_B = {
 			.autostart = FALSE,
 			.priority = 1,
-			.state = READY,
+			.state = SUSPENDED,
 			.function = task_B_function,
 	};
 
 	task_t task_C = {
 			.autostart = FALSE,
 			.priority = 2,
-			.state = READY,
+			.state = SUSPENDED,
 			.function = task_C_function,
 	};
 
