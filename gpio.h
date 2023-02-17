@@ -13,6 +13,10 @@
 
 #include "stdint.h"
 
+#define EnablePortClock(MASK) ({SIM->SCGC5 |= MASK;})
+#define SetPin_GPIO(PORT,PIN) ({PORT->PCR[PIN] |= GPIO_MUX_MASK;})
+
+
 /*! These constants are used to select an specific port in the different API functions*/
 typedef enum{GPIO_A, /*!< Definition to select GPIO A */
 			 GPIO_B, /*!< Definition to select GPIO B */
