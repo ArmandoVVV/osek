@@ -39,6 +39,6 @@ void terminate_task(void);
 void os_init(void);
 void scheduler(void);
 
-void add_task(task_t task);
+uint8_t add_task(task_t task);
 
 #endif /* OSEK_H_ */

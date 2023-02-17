@@ -2,7 +2,6 @@
  * config.h
  *
  * 		\brief
-
  *  	Created on:
  *  Author: Armando Cabrales
  *  		Efren Díaz
@@ -35,7 +34,7 @@ typedef enum{
 #define RED_LED_MASK			(1 << RED_LED_PIN)
 #define BLUE_LED_MASK			(1 << BLUE_LED_PIN)
 #define GREEN_LED_MASK			(1 << GREEN_LED_PIN)
-
+#define GPIO_MUX_MASK			(1 << 8)
 
 
 #endif /* CONFIG_H_ */
