@@ -8,8 +8,6 @@
 
 #include "osek.h"
 
-#define MAX_TASKS		10
-
 static task_t tasks_g[MAX_TASKS];
 static task_t* running_task_g;
 

@@ -13,6 +13,7 @@
 #include "config.h"
 
 #define TOTAL_TASKS		3
+#define MAX_TASKS		10
 
 
 typedef enum{
