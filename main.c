@@ -10,6 +10,7 @@
 #include "leds.h"
 #include "nvic.h"
 
+
 #define DELAY	20000000
 #define CLOCK_FREQ 21000000
 
@@ -71,7 +72,7 @@ int main(void) {
 			.state = SUSPENDED,
 			.function = task_C_function,
 	};
-
+  
 	g_task_A_ID = add_task(task_A);
 	g_task_B_ID = add_task(task_B);
 	g_task_C_ID = add_task(task_C);
@@ -83,7 +84,6 @@ int main(void) {
 	NVIC_set_priority(PORTD_IRQ, PRIORITY_1);
 	NVIC_enable_interrupt(PORTA_IRQ);
 	NVIC_set_priority(PORTA_IRQ, PRIORITY_1);
-
 
 
 	GPIO_init();
