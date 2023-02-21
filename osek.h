@@ -14,6 +14,7 @@
 
 #define TOTAL_TASKS		3
 #define MAX_TASKS		10
+#define STACK_SIZE		100
 
 
 typedef enum{
@@ -27,11 +28,10 @@ typedef struct{
 	uint8_t priority;
 	void (*function)(void);	  // apuntador a inicio de la tarea
 	uint8_t task_id;
-	//uint32_t* current_address; // todo: implementar bien en practica 2
 	boolean_t autostart;
 	task_state_t state;
-	// registro
-	// contexto
+	uint32_t *sp;
+	uint32_t stack[STACK_SIZE];
 }task_t;
 
 
