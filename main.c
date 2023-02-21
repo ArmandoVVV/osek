@@ -8,49 +8,52 @@
 #include "osek.h"
 #include "gpio.h"
 #include "leds.h"
+#include "nvic.h"
 
-
-#define TASK_A_ID	0
-#define TASK_B_ID	1
-#define TASK_C_ID	2
-#define US_TO_DELAY	20000000
+#define DELAY	20000000
 #define CLOCK_FREQ 21000000
 
-void delay(uint32_t delay){
-	uint8_t i;
 
-	while(i < 100){
+uint8_t g_task_A_ID;
+uint8_t g_task_B_ID;
+uint8_t g_task_C_ID;
+
+void delay(uint32_t delay){
+	volatile uint32_t i = 0;
+
+	while(i < DELAY){ //TODO: Make a variable with the core freq, to compare.
 		i++;
 	}
 }
 
 void task_A_function(void){
 	Green_led_on();
-	delay(US_TO_DELAY); //TODO: Save core freq in a variable, make this more precision
-	activate_task(TASK_B_ID); //TODO: Is not needed to send the task ID.
+	delay(DELAY); //TODO: Save core freq in a variable, make this more precision
+	activate_task(g_task_B_ID); //TODO: Is not needed to send the task ID.
 	Green_led_on();
-	delay(US_TO_DELAY);
+	delay(DELAY);
 	RGB_off();
 	terminate_task();
 }
 
 void task_B_function(void){
 	Red_led_on();
-	delay(US_TO_DELAY);
-	chain_task(TASK_C_ID); //TODO: Remade this function, this will terminate this task and continue th next task.
-	terminate_task();		//TODO: So far this is not needed.
+	delay(DELAY);
+	RGB_off();
+	chain_task(g_task_C_ID);
 }
 
 void task_C_function(void){
 	Blue_led_on();
-	delay(US_TO_DELAY);
+	delay(DELAY);
+	RGB_off();
 	terminate_task();
 }
 
 int main(void) {
 	task_t task_A = {						//TODO: Move this variable out of main
 			.autostart = TRUE,
-			.priority = 0,					//TODO: Priorites are inversed.
+			.priority = 0,
 			.state = SUSPENDED,
 			.function = task_A_function,
 	};
@@ -69,9 +72,18 @@ int main(void) {
 			.function = task_C_function,
 	};
 
-	add_task(task_A); //TODO: This is the global solution for the variables in main
-	add_task(task_B); //TODO: With return: task_A_ID = add_task(task_A)
-	add_task(task_C);
+	g_task_A_ID = add_task(task_A);
+	g_task_B_ID = add_task(task_B);
+	g_task_C_ID = add_task(task_C);
+
+	NVIC_global_enable_interrupts;
+	NVIC_set_BASEPRI_threshold(PRIORITY_3);
+
+	NVIC_enable_interrupt(PORTD_IRQ);
+	NVIC_set_priority(PORTD_IRQ, PRIORITY_1);
+	NVIC_enable_interrupt(PORTA_IRQ);
+	NVIC_set_priority(PORTA_IRQ, PRIORITY_1);
+
 
 
 	GPIO_init();

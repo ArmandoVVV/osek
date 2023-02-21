@@ -8,9 +8,7 @@
 
 #include "osek.h"
 
-#define MAX_TASKS		10
-
-static task_t tasks_g[MAX_TASKS]; //TODO: Max number task (10) delete magic number
+static task_t tasks_g[MAX_TASKS];
 static task_t* running_task_g;
 
 uint8_t add_task(task_t task){
