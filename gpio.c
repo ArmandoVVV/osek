@@ -18,6 +18,7 @@ void PORTD_IRQHandler(void){
 
 	irq_status = GPIO_PortGetInterruptFlags(GPIOD); // TODO: SDK
 
+	// funcion solo para probar la interrupcion
 	activate_task(2);
 
 
@@ -29,6 +30,7 @@ void PORTA_IRQHandler(void){
 
 	irq_status = GPIO_PortGetInterruptFlags(GPIOA); // TODO: SDK
 
+	// funcion solo para probar la interrupcion
 	terminate_task();
 
 
@@ -36,8 +38,7 @@ void PORTA_IRQHandler(void){
 }
 
 
-void GPIO_init(void)
-{
+void GPIO_init(void){
 	//Enable port clocks
 	EnablePortClock(SIM_SCGC5_PORTC_MASK);
 	EnablePortClock(SIM_SCGC5_PORTA_MASK);
@@ -53,16 +54,17 @@ void GPIO_init(void)
 
 
 	//Config GPIO direction as output
-	RED_LED_GPIO->PDDR |= RED_LED_MASK; //TODO: Convert to a macro; Set_GPIO_Output(GPIO,MASK_PIN) ({GPIO->PDDR |= MASK_PIN})
-	BLUE_LED_GPIO->PDDR |= BLUE_LED_MASK;
-	GREEN_LED_GPIO->PDDR |= GREEN_LED_MASK;
+	SET_PIN_AS_OUTPUT(RED_LED_GPIO, RED_LED_MASK);
+	SET_PIN_AS_OUTPUT(BLUE_LED_GPIO, BLUE_LED_MASK);
+	SET_PIN_AS_OUTPUT(GREEN_LED_GPIO, GREEN_LED_MASK);
+
 
 	//Config GPIO direction as input
-	SW2_GPIO->PDDR &= GPIO_FIT_REG(~(SW2_MASK));
-	SW3_GPIO->PDDR &= GPIO_FIT_REG(~(SW3_MASK));
+	SET_PIN_AS_INPUT(SW2_GPIO, SW2_MASK);
+	SET_PIN_AS_INPUT(SW3_GPIO, SW3_MASK);
 
 	// Config interruption
-	SW2_PORT->PCR[SW2_PIN] = (SW2_PORT->PCR[SW2_PIN] & ~PORT_PCR_IRQC_MASK) | PORT_PCR_IRQC(kPORT_InterruptFallingEdge);
-	SW3_PORT->PCR[SW3_PIN] = (SW3_PORT->PCR[SW3_PIN] & ~PORT_PCR_IRQC_MASK) | PORT_PCR_IRQC(kPORT_InterruptFallingEdge);
+	SET_PIN_INTERRUPT(SW2_PORT, SW2_PIN, kPORT_InterruptFallingEdge);
+	SET_PIN_INTERRUPT(SW3_PORT, SW3_PIN, kPORT_InterruptFallingEdge);
 
 }

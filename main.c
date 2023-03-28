@@ -11,7 +11,7 @@
 #include "nvic.h"
 
 
-#define DELAY	20000000
+#define DELAY	2000000
 #define CLOCK_FREQ 21000000
 
 
@@ -30,7 +30,7 @@ void delay(uint32_t delay){
 void task_A_function(void){
 	Green_led_on();
 	delay(DELAY); //TODO: Save core freq in a variable, make this more precision
-	activate_task(g_task_B_ID); //TODO: Is not needed to send the task ID.
+	activate_task(g_task_B_ID);
 	Green_led_on();
 	delay(DELAY);
 	RGB_off();
