@@ -16,22 +16,18 @@ void PORTD_IRQHandler(void){
 	uint32_t irq_status = 0;
 
 	irq_status = GPIO_PortGetInterruptFlags(GPIOD); // TODO: SDK
-
-	activate_task(2);
-
-
 	GPIO_PortClearInterruptFlags(GPIOD, irq_status); // TODO: SDK
+	//activate_task(2);
+
 }
 
 void PORTA_IRQHandler(void){
 	uint32_t irq_status = 0;
 
 	irq_status = GPIO_PortGetInterruptFlags(GPIOA); // TODO: SDK
-
+	GPIO_PortClearInterruptFlags(GPIOA, irq_status); // TODO: SDK
 	terminate_task();
 
-
-	GPIO_PortClearInterruptFlags(GPIOA, irq_status); // TODO: SDK
 }
 
 

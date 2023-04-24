@@ -12,9 +12,15 @@
 #include "stdint.h"
 #include "config.h"
 
-#define TOTAL_TASKS		3
-#define MAX_TASKS		10
-#define STACK_SIZE		100
+
+#define TOTAL_TASKS					5
+#define MAX_TASKS					10
+#define STACK_SIZE					100
+#define STACK_FRAME_SIZE			8
+#define STACK_LR_OFFSET				2
+#define STACK_PSR_OFFSET			1
+#define STACK_PSR_DEFAULT			0x01000000
+#define STACKOFFSET 				9
 
 
 typedef enum{
@@ -24,23 +30,36 @@ typedef enum{
 	WAITING
 }task_state_t;
 
+typedef enum
+{
+	kFromNormalExec = 0,
+	kFromISR,
+} task_switch_type;
+
+typedef enum
+{
+	kAutoStart,
+	kStartSuspended
+} autostart_e;
+
 typedef struct{
-	uint8_t priority;
-	void (*function)(void);	  // apuntador a inicio de la tarea
+	int8_t priority;
+	autostart_e autostart;
+	void (*function)();	  // apuntador a inicio de la tarea
 	uint8_t task_id;
-	boolean_t autostart;
-	task_state_t state;
 	uint32_t *sp;
+	task_state_t state;
 	uint32_t stack[STACK_SIZE];
 }task_t;
 
 
-void activate_task(uint8_t task_id);
-void chain_task(uint8_t task_id);
+
+
+void activate_task(uint8_t task_id,task_switch_type task_type);
+void chain_task(uint8_t task_id,task_switch_type task_type);
 void terminate_task(void);
 void os_init(void);
-void scheduler(void);
 
-uint8_t add_task(task_t task);
+uint8_t task_create(task_t task);
 
 #endif /* OSEK_H_ */

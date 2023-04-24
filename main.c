@@ -5,12 +5,13 @@
  *  		Efren Díaz
  */
 #include "config.h"
+#include <stdio.h>
 #include "osek.h"
 #include "gpio.h"
 #include "leds.h"
 #include "nvic.h"
 
-#define DELAY	20000000
+#define DELAY	2000000
 #define CLOCK_FREQ 21000000
 
 
@@ -29,7 +30,7 @@ void delay(uint32_t delay){
 void task_A_function(void){
 	Green_led_on();
 	delay(DELAY); //TODO: Save core freq in a variable, make this more precision
-	activate_task(g_task_B_ID); //TODO: Is not needed to send the task ID.
+	activate_task(g_task_B_ID,kFromNormalExec); //TODO: Is not needed to send the task ID.
 	Green_led_on();
 	delay(DELAY);
 	RGB_off();
@@ -40,7 +41,7 @@ void task_B_function(void){
 	Red_led_on();
 	delay(DELAY);
 	RGB_off();
-	chain_task(g_task_C_ID);
+	chain_task(g_task_C_ID,kFromNormalExec);
 }
 
 void task_C_function(void){
@@ -52,40 +53,42 @@ void task_C_function(void){
 
 int main(void) {
 	task_t task_A = {						//TODO: Move this variable out of main
-			.autostart = TRUE,
+			.autostart = kAutoStart,
 			.priority = 0,
-			.state = SUSPENDED,
 			.function = task_A_function,
 	};
 
 	task_t task_B = {
-			.autostart = FALSE,
+			.autostart = kStartSuspended,
 			.priority = 1,
-			.state = SUSPENDED,
 			.function = task_B_function,
 	};
 
 	task_t task_C = {
-			.autostart = FALSE,
+			.autostart = kStartSuspended,
 			.priority = 2,
-			.state = SUSPENDED,
 			.function = task_C_function,
 	};
+	g_task_A_ID = task_create(task_A);
+	if (-1 == g_task_A_ID)
+			printf("Task 1 creation failed\r\n");
+	g_task_B_ID = task_create(task_B);
+	if (-1 == g_task_B_ID)
+				printf("Task 2 creation failed\r\n");
+	g_task_C_ID = task_create(task_C);
+	if (-1 == g_task_C_ID)
+				printf("Task 3 creation failed\r\n");
 
-	g_task_A_ID = add_task(task_A);
-	g_task_B_ID = add_task(task_B);
-	g_task_C_ID = add_task(task_C);
-
-	NVIC_global_enable_interrupts;
-	NVIC_set_BASEPRI_threshold(PRIORITY_3);
-
-	NVIC_enable_interrupt(PORTD_IRQ);
-	NVIC_set_priority(PORTD_IRQ, PRIORITY_1);
-	NVIC_enable_interrupt(PORTA_IRQ);
-	NVIC_set_priority(PORTA_IRQ, PRIORITY_1);
+//	NVIC_global_enable_interrupts;
+//	NVIC_set_BASEPRI_threshold(PRIORITY_3);
+//
+//	NVIC_enable_interrupt(PORTD_IRQ);
+//	NVIC_set_priority(PORTD_IRQ, PRIORITY_1);
+//	NVIC_enable_interrupt(PORTA_IRQ);
+//	NVIC_set_priority(PORTA_IRQ, PRIORITY_1);
 
 
-
+	NVIC_SetPriority(PendSV_IRQn, 0xFF);
 	GPIO_init();
 	os_init();
 

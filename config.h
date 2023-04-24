@@ -10,6 +10,9 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
+#include "fsl_gpio.h"
+#include "fsl_port.h"
+
 typedef enum{
 	FALSE,
 	TRUE
